@@ -1,0 +1,59 @@
+Signal P00 to S0: connect_req L00 to L01
+Signal S0 to P00: connected L00 to L01
+
+Signal P02 to S0: connect_req L02 to L10
+Signal S0 to R: connect_req T00 to L10
+
+Signal R to S0: connect_req T01 to L03
+Signal S0 to R: connected T01 to L03
+
+Signal P04 to S0: connect_req L04 to L03
+Signal S0 to P04: busy L04 to L03
+
+Signal R to S0: connect_req T02 to L03
+Signal S0 to R: busy T02 to L03
+
+Signal P04 to S0: connect_req L04 to L03
+Signal S0 to P04: busy L04 to L03
+
+Signal P01 to S0: disconnected L01
+Signal S0 to P00: disconnected L00
+
+Signal P02 to S0: disconnected L02
+Signal S0 to R: disconnected T00
+
+Signal R to S0: disconnected T01
+Signal S0 to P03: disconnected L03
+
+Signal P00 to S0: connect_req L00 to L10
+Signal S0 to R: connect_req T00 to L10
+
+Signal R to S0: connected T00 to L10
+Signal S0 to P00: connected L00 to L10
+
+Signal P01 to S0: connect_req L01 to L11
+Signal S0 to R: connect_req T01 to L11
+
+Signal R to S0: connected T01 to L11
+Signal S0 to P01: connected L01 to L11
+
+Signal P02 to S0: connect_req L02 to L12
+Signal S0 to R: connect_req T02 to L12
+
+Signal P03 to S0: connect_req L03 to L13
+Signal S0 to R: connect_req T03 to L13
+
+Signal P04 to S0: connect_req L04 to L14
+Signal S0 to R: connect_req T04 to L14
+
+Signal P05 to S0: connect_req L05 to L15
+Signal S0 to P05: busy L05 to L15
+
+Signal P06 to S0: connect_req L06 to L16
+Signal S0 to P06: busy L06 to L16
+
+
+   0    1    2    3    4 
+LS00 LS01 LS02 LS03 LS04 
+   0    1    2    3    4    5    6    7    8    9 
+TS00 TS01 TS02 TS03 TS04    F    F    F    F    F 

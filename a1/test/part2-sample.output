@@ -1,0 +1,37 @@
+Signal S0 to R: connect_req T00 to L10
+Signal R to S1: connect_req T10 to L10
+
+Signal S0 to R: connect_req T01 to L11
+Signal R to S1: connect_req T11 to L11
+
+Signal S0 to R: connect_req T02 to L12
+Signal R to S1: connect_req T12 to L12
+
+Signal S0 to R: connect_req T03 to L13
+Signal R to S1: connect_req T13 to L13
+
+Signal S0 to R: connect_req T04 to L14
+Signal R to S1: connect_req T14 to L14
+
+Signal S0 to R: connect_req T05 to L15
+Signal R to S0: busy T05 to L15
+
+Signal S2 to R: connect_req T20 to L10
+Signal R to S2: busy T20 to L10
+
+Signal S1 to R: disconnected T10
+Signal R to S0: disconnected T00
+
+Signal S1 to R: disconnected T11
+Signal R to S0: disconnected T01
+
+Signal S1 to R: disconnected T14
+Signal R to S0: disconnected T04
+
+
+      0    1    2    3    4    5    6    7    8    9 
+ 0    F    F    F    F    F    F    F    F    F    F 
+ 1    F    F    F    F    F    F    F    F    F    F 
+ 2 TR12 TR02    F    F    F    F    F    F    F    F 
+ 3 TR13 TR03    F    F    F    F    F    F    F    F 
+ 4    F    F    F    F    F    F    F    F    F    F 

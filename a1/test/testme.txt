@@ -1,0 +1,2 @@
+Signal P00 to S0: connect_req L00 to L12
+Signal P22 to S2: connect_req L22 to L12

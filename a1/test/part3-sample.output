@@ -1,0 +1,77 @@
+Signal P00 to S0: connect_req L00 to L01
+Signal S0 to P00: connected L00 to L01
+
+Signal P02 to S0: connect_req L02 to L30
+Signal S0 to R: connect_req T00 to L30
+Signal R to S3: connect_req T30 to L30
+Signal S3 to R: connected T30 to L30
+Signal R to S0: connected T00 to L30
+Signal S0 to P02: connected L02 to L30
+
+Signal P03 to S0: connect_req L03 to L40
+Signal S0 to R: connect_req T01 to L40
+Signal R to S4: connect_req T40 to L40
+Signal S4 to R: connected T40 to L40
+Signal R to S0: connected T01 to L40
+Signal S0 to P03: connected L03 to L40
+
+Signal P04 to S0: connect_req L04 to L01
+Signal S0 to P04: busy L04 to L01
+
+Signal P05 to S0: connect_req L05 to L01
+Signal S0 to P05: busy L05 to L01
+
+Signal P06 to S0: connect_req L06 to L40
+Signal S0 to R: connect_req T02 to L40
+Signal R to S4: connect_req T41 to L40
+Signal S4 to R: busy T41 to L40
+Signal R to S0: busy T02 to L40
+Signal S0 to P06: busy L06 to L40
+
+Signal P07 to S0: connect_req L07 to L21
+Signal S0 to R: connect_req T02 to L21
+Signal R to S2: connect_req T20 to L21
+Signal S2 to R: connected T20 to L21
+Signal R to S0: connected T02 to L21
+Signal S0 to P07: connected L07 to L21
+
+Signal P01 to S0: disconnected L01
+Signal S0 to P00: disconnected L00
+
+Signal P30 to S3: disconnected L30
+Signal S3 to R: disconnected T30
+Signal R to S0: disconnected T00
+Signal S0 to P02: disconnected L02
+
+Signal P03 to S0: disconnected L03
+Signal S0 to R: disconnected T01
+Signal R to S4: disconnected T40
+Signal S4 to P40: disconnected L40
+
+Signal P09 to S0: connect_req L09 to L03
+Signal S0 to P09: connected L09 to L03
+
+
+      0    1    2    3    4    5    6    7    8    9 
+ 0    F    F TR02    F    F    F    F    F    F    F 
+ 1    F    F    F    F    F    F    F    F    F    F 
+ 2 TR20    F    F    F    F    F    F    F    F    F 
+ 3    F    F    F    F    F    F    F    F    F    F 
+ 4    F    F    F    F    F    F    F    F    F    F 
+      0    1    2    3    4    5    6    7    8    9 
+ 0    F    F LS21    F    F    F    F    F    F    F 
+ 1    F    F    F    F    F    F    F    F    F    F 
+ 2 LS07    F    F    F    F    F    F    F    F    F 
+ 3    F    F    F    F    F    F    F    F    F    F 
+ 4    F    F    F    F    F    F    F    F    F    F 
+      0    1    2    3    4    5    6    7    8    9 
+ 0    F    F    F    F    F    F    F    F    F    F 
+ 1    F    F TS20    F    F    F    F    F    F    F 
+ 2    F    F    F    F    F    F    F    F    F    F 
+ 3 LS09    F    F    F    F    F    F    F    F    F 
+ 4    F    F    F    F    F    F    F    F    F    F 
+ 5    F    F    F    F    F    F    F    F    F    F 
+ 6    F    F    F    F    F    F    F    F    F    F 
+ 7 TS02    F    F    F    F    F    F    F    F    F 
+ 8    F    F    F    F    F    F    F    F    F    F 
+ 9 LS03    F    F    F    F    F    F    F    F    F 

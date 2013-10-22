@@ -1,0 +1,107 @@
+./
+./main.c
+./main1.o
+./phreak.c
+./phreak.h
+./phreak_limits.h
+./Makefile
+./test/
+./test/a1-sample.zip
+./test/part1-sample.input
+./test/part1-sample.output
+./test/part2-sample.input
+./test/part2-sample.output
+./test/part3-sample.input
+./test/part3-sample.output
+./test/testme.txt
+./phreak.o
+./\\
+./phreak1
+./main2.o
+./phreak2
+./main3.o
+./phreak3
+./handin.txt
+./test1.txt
+./.handin.txt.swp
+./output.txt
+./.nfs00000000000af836000000fc
+Trying to compile your code...
+rm -rf phreak.o main1.o main2.o main3.o phreak1 phreak2 phreak3
+gcc -DPART=1 -Wall -g  -c -o main1.o main.c
+gcc -Wall -g    -c -o phreak.o phreak.c
+phreak.c: In function 'switch_process_signal':
+phreak.c:70:2: warning: enumeration value 'SIGNAL_INVALID' not handled in switch [-Wswitch]
+phreak.c:70:2: warning: enumeration value 'NUM_POSSIBLE_SIGNALS' not handled in switch [-Wswitch]
+phreak.c: In function 'root_process_signal':
+phreak.c:307:9: warning: unused variable 'back_trunk_index' [-Wunused-variable]
+phreak.c:273:2: warning: enumeration value 'SIGNAL_INVALID' not handled in switch [-Wswitch]
+phreak.c:273:2: warning: enumeration value 'NUM_POSSIBLE_SIGNALS' not handled in switch [-Wswitch]
+gcc  -o phreak1 main1.o phreak.o  
+gcc -DPART=2 -Wall -g  -c -o main2.o main.c
+gcc  -o phreak2 main2.o phreak.o  
+gcc -DPART=3 -Wall -g  -c -o main3.o main.c
+gcc  -o phreak3 main3.o phreak.o  
+Compilation completed successfully.
+
+*** Tests for part 1 ***
+
+  Long distance call to busy phone...................... [ OK ]
+  Inbound long distance call after disconnect........... [ OK ]
+  Disconnect coming from long dissstance................ [ OK ]
+  Successful call from long distance.................... [ OK ]
+  Place long distance call after disconnect............. [ OK ]
+  Disconnect long distance call......................... [ OK ]
+  Place long distance call on busy trunk................ [ OK ]
+  Place long distance call.............................. [ OK ]
+  Call busy phone after successful long distance call .. [ OK ]
+  Busy signal within a Local Call....................... [ OK ]
+  Call phone after busy signal.......................... [ OK ]
+  Call phone after disconnect........................... [ OK ]
+  Local call successful................................. [ OK ]
+  Disconnect from local call............................ [ OK ]
+  No input provided..................................... [ OK ]
+  Provided sample inputs................................ [ OK ]
+  Long sequence of commands............................. [ OK ]
+Result: 17 out of 17 correct (40.0/40)
+
+*** Tests for part 2 ***
+
+  Make and receive calls after disconnect............... [ OK ]
+  Calls are successful.................................. [ OK ]
+  Disconnect from callee................................ [ OK ]
+  Disconnect from caller................................ [ OK ]
+  Try make a connection to full trunk................... [ OK ]
+  No commands........................................... [ OK ]
+  Sample similar to one provided........................ [ OK ]
+  Random sequence....................................... [ OK ]
+Result: 8 out of 8 correct (40.0/40)
+
+*** Tests for part 3 ***
+
+  Busy callee trunk..................................... [ OK ]
+  Busy caller trunk..................................... [ OK ]
+  Long distance call to busy phone...................... [ OK ]
+  Inbound long distance call after disconnect........... [ OK ]
+  Disconnect coming from long distance.................. [ OK ]
+  Successful call from long distance.................... [ OK ]
+  Place long distance call after disconnect............. [ OK ]
+  Disconnect long distance call......................... [ OK ]
+  Place long distance call on busy trunk................ [ OK ]
+  Place long distance call.............................. [ OK ]
+  Call busy phone after successful long distance call .. [ OK ]
+  Busy signal within a Local Call....................... [ OK ]
+  Call phone after busy signal.......................... [ OK ]
+  Call phone after disconnect........................... [ OK ]
+  Local call successful................................. [ OK ]
+  Disconnect from local call............................ [ OK ]
+  No input provided..................................... [ OK ]
+  Provided sample inputs................................ [ OK ]
+  Long sequence of commands............................. [ OK ]
+Result: 19 out of 19 correct (20.0/20)
+
+PRELIMINARY SCORE...: 100.0/100
+
+DISCLAIMER: This score is subject to change based on additional tests 
+and review by the teaching staff.
+

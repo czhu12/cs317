@@ -1,0 +1,10 @@
+Signal S0 to R: connect_req T00 to L10
+Signal S0 to R: connect_req T01 to L11
+Signal S0 to R: connect_req T02 to L12
+Signal S0 to R: connect_req T03 to L13
+Signal S0 to R: connect_req T04 to L14
+Signal S0 to R: connect_req T05 to L15
+Signal S2 to R: connect_req T20 to L10
+Signal S1 to R: disconnected T10
+Signal S1 to R: disconnected T11
+Signal S1 to R: disconnected T14

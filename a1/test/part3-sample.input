@@ -1,0 +1,11 @@
+Signal P00 to S0: connect_req L00 to L01
+Signal P02 to S0: connect_req L02 to L30
+Signal P03 to S0: connect_req L03 to L40
+Signal P04 to S0: connect_req L04 to L01
+Signal P05 to S0: connect_req L05 to L01
+Signal P06 to S0: connect_req L06 to L40
+Signal P07 to S0: connect_req L07 to L21
+Signal P01 to S0: disconnected L01
+Signal P30 to S3: disconnected L30
+Signal P03 to S0: disconnected L03
+Signal P09 to S0: connect_req L09 to L03

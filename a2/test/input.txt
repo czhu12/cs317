@@ -1,0 +1,10 @@
+P1 cdef 0123 045
+P4 aabb 1122 046
+P3 0123 cdef 047
+P0 abcd 9876 048
+P4 0123 cdef 049
+TICK 
+P1 9876 abcd 050
+TICK 
+P4 ffff 9876 051
+TICK 
