@@ -82,15 +82,6 @@ int map_insert(map *m, map_key key, map_value value, map_value *old_value) {
 				head->next = newNode;
 		}
 	}
-	//if(head){
-	//	if(newNode->key > head->key){
-	//		head->next = insertNode(head->next, newNode);
-	//	}else{
-	//		(*m)->head = newNode;
-	//		newNode->next = head;
-	//	} //}else{
-	//	(*m)->head = newNode;
-	//}
 	return 1; 
 }
 

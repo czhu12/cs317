@@ -1,0 +1,44 @@
+*** Tests for part 1 ***
+
+IP in table 1...................... [FAIL] ** Some files incorrect
+IP not in table 1.................. [FAIL] ** Some files incorrect
+Longest prefix 1................... [ OK ]
+Ordering 1......................... [FAIL] ** Some files incorrect
+Ordering 2......................... [FAIL] ** Some files incorrect
+Ordering 3......................... [FAIL] ** Some files incorrect
+Ordering 4......................... [FAIL] ** Some files incorrect
+Packet longer prefix............... [ OK ]
+Packet shorter prefix.............. [ OK ]
+Packet to unreachable.............. [FAIL] ** Some files incorrect
+Simple table....................... [FAIL] ** Some files incorrect
+Update unreachable................. [FAIL] ** Some files incorrect
+				Update unreachable silent.......... [FAIL] ** Some files incorrect
+Result: 3 out of 13 correct (9.2/40)
+
+*** Tests for part 2 ***
+
+All unreachable 1.................. [FAIL] ** All files incorrect
+Double update...................... [FAIL] ** All files incorrect
+Lowest becomes unreachable......... [FAIL] ** All files incorrect
+Lowest metric higher choose other.. [FAIL] ** All files incorrect
+Lowest metric higher still min..... [FAIL] ** All files incorrect
+Lowest metric lower................ [FAIL] ** All files incorrect
+New higher metric.................. [FAIL] ** All files incorrect
+New lower metric................... [FAIL] ** All files incorrect
+Nonmin becomes lower............... [FAIL] ** All files incorrect
+Nonmin nic higher.................. [FAIL] ** All files incorrect
+Num nics updates................... [FAIL] ** All files incorrect
+Resurrect unreachable to min....... [FAIL] ** All files incorrect
+Resurrect unreachable to nonmin.... [FAIL] ** All files incorrect
+Same metric higher id.............. [FAIL] ** All files incorrect
+Same metric lower id............... [FAIL] ** All files incorrect
+Single update...................... [FAIL] ** All files incorrect
+Update other lower chosen.......... [FAIL] ** All files incorrect
+Update other still higher.......... [FAIL] ** All files incorrect
+Result: 0 out of 18 correct (0/60)
+
+PRELIMINARY SCORE...: 9.2/100
+
+DISCLAIMER: This score is subject to change based on additional tests 
+and review by the teaching staff.
+

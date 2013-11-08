@@ -32,12 +32,15 @@ switch_table create_switch_table(void) {
  */
 port_set forward_incoming_frame(switch_table *table, uint8_t port, uint16_t destination,
 				uint16_t source, uint16_t frameid) {
-	if(destination == 65535){
-		return PORT_SET_REMOVE_PORT(PORT_SET_ALL, port);
-	}
 
 	(*table)->head = insert_node((*table)->head, source, port);
 	uint8_t dest_port = search_node((*table)->head, destination);
+	if(dest_port == port){
+		return PORT_SET_NONE;
+	}
+	if(destination == 0xffff){
+		return PORT_SET_REMOVE_PORT(PORT_SET_ALL, port);
+	}
 	if(dest_port == 255){
 		//this mean it was not found
 		return PORT_SET_REMOVE_PORT(PORT_SET_ALL, port);
