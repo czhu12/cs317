@@ -55,6 +55,12 @@ void process_update(router_state *state, uint32_t ip, uint8_t netsize,
 	if(!n){ //node wasnt found previously
 		node * new_node = node_find_subnet((*state)->head, node_key);
 		new_distance = find_shortest_nic(new_node, &best_nic);
+
+		if(new_distance == METRIC_UNREACHABLE){
+			print_advertisement(ip, netsize, -1, new_distance, update_id);
+			return;	
+		}
+
 		print_advertisement(ip, netsize, best_nic, new_distance, update_id );
 		return;
 	}else{
@@ -64,6 +70,10 @@ void process_update(router_state *state, uint32_t ip, uint8_t netsize,
 	//and distance is not new distance (best distance changed)
 	//then advertise
 		if (distance != new_distance){
+			if(new_distance == METRIC_UNREACHABLE){
+				print_advertisement(ip, netsize, -1, new_distance, update_id);
+				return;	
+			}
 			print_advertisement(ip, netsize, best_nic, new_distance, update_id );
 		}
 	}

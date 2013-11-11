@@ -13,3 +13,5 @@ ip_route_main.o: ip_route_main.c ip_route.h capacity.h
 
 clean:
 	-rm -rf ip_forward.o ip_route.o ip_forward_main.o ip_route_main.o ip_forward ip_route
+handin:
+	handin -o cs317 a3

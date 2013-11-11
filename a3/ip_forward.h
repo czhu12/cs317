@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include "capacity.h"
+
 typedef struct node_key {
 	uint32_t ip;
 	uint8_t netsize;
@@ -21,7 +22,6 @@ typedef struct node {
 } node;
 
 typedef struct router_state {
-  
   // TODO Add all fields deamed necessary for the state of the router
   node * head;
 } *router_state;
@@ -35,5 +35,9 @@ node * node_insert(node * head, uint32_t ip, uint8_t netsize, int nic);
 int key_compare(node_key key1, node_key key2);
 void print_nodes(node * node, FILE * output);
 void free_nodes(node * n);
-
+int find_longest_prefix_match(node * n, uint32_t ip);
+int check_match(node * n, uint32_t ip);	
+node * node_delete(node * n, uint32_t ip, uint8_t netsize);
+int key_equals(node_key key1, node_key key2);
+void print(node * n);
 #endif
