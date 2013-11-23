@@ -1,7 +1,7 @@
 /*
  * File: service.c
  */
-#define NUM_ROUTES 10
+#define NUM_ROUTES 2
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -55,16 +55,23 @@ void init_req_header(req_header * req, char * header){
 	req->path = http_parse_path(http_parse_uri(header));
 	cookie * cookies = parse_cookies(header);
 	req->cookies = cookies;
+	req->connection = http_parse_header_field(req, len, "Connection");
 }
 
 void handle_client(int socket) {
 	initialize_routes();
 	req_header header;
+
+	do {
 	char buffer[5000];
-	recv(socket, buffer, 4000, 0);
+	int status = recv(socket, buffer, 4000, 0);
+	if(status == 0 || status == -1) break;
 	init_req_header(&header, buffer);
 	char * returnString = handle_request(&header);
 	send(socket, returnString, strlen(returnString), 0);
+	}while(!strcmp(header.connection, "keep-alive"));
+
+	close(socket);
 
 	/* TODO Loop receiving requests and sending appropriate responses,
 	 *      until one of the conditions to close the connection is
@@ -77,20 +84,26 @@ void handle_client(int socket) {
 char * handle_request(req_header * header){
 	return match_routes(header);
 }
+
 char * return404(){
-	char * returnString = "404";
-	//add_header("Content-Type: ","text/plain\r\n", returnString);
-	return add_header("HTTP/1.1 ", "404 Not Found", returnString);
+	char * returnString = "Command not found";
+	returnString = add_header("HTTP/1.1 ", "404 Not Found\r\n", returnString);
+	printf("%s\n", returnString);
+	return returnString;
 }
+
 char * match_routes(req_header * header){
 	int i;
-	for(i = 0; i< NUM_ROUTES; i++){
+	for(i = 0; i < NUM_ROUTES; i++){
 		if(!strcmp(routes[i].route, extract_path(header->path))){
+			printf("Routing to %s\n", extract_path(header->path));
 			char * content = handle_route(header, i);
 			content = wrap_header(header, content);
+			printf("%s\n", content);
 			return content;
 		}
 	}
+	//printf("did not find any matching routes...\n");
 	return return404();
 }
 
@@ -127,7 +140,22 @@ char * handle_route(req_header * header, int route_index){
 			break;
 		case 2://logout
 			{
+				char buffer[100];
+				strcpy(buffer, header->path);
+				char * split;
+				split = strtok(buffer, "/=?&");
+				char * username = NULL;
 
+				while(split != NULL){
+					if(!strcmp(strtok(NULL, "/=?&"), "username")){
+						username = strtok(NULL, "/=?&");
+						break;
+					}
+				}
+				char * content = malloc(strlen("Username: ") + strlen(username) + 10);
+				sprintf(content, "%s%s%s", "User: ", username, " was logged out");
+				
+				
 			}
 			break;
 		case 3://getfile
@@ -163,18 +191,13 @@ char * wrap_header(req_header * header, char * content ){
 	char content_length_str[4] = {0};
 	sprintf(content_length_str, "%d", content_length);
 
-	char * cookie_string = build_cookie_string(header->cookies);
-	printf("%s\n", cookie_string);
-	//printf("cookie_string : %s, cookies pointer:%p \n", cookie_string, header->cookies);
+	char * cookie_string = NULL;
+	cookie_string = build_cookie_string(header->cookies);
 
 	content = add_header("Content-Type: ","text/plain\r\n", content);
 
 	if(header->cookies){
-		char * cookie_string = build_cookie_string(header->cookies);
-		printf("%s", cookie_string);
-
-		content = add_header("Set-Cookie: ", cookie_string, content);
-		//content = add_header("Set-Cookie: ", cookie_string, content);
+		content = add_header("Set-Cookie: ",cookie_string, content);
 	}
 	content = add_header("Content-Type: ","text/plain", content);
 	content = add_header("Content-Length: ", content_length_str, content);
@@ -202,6 +225,9 @@ char * build_header(char * header_type, char * header_content){
 	return new_str;
 }
 char * extract_path(char * path){
+	if(*path == '/' && (strlen(path) == 1)){
+		return path;
+	}
 	char buffer[strlen(path)];
 	strcpy(buffer, path);
 	char * split = NULL;

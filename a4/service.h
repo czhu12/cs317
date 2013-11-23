@@ -25,6 +25,7 @@ typedef struct req_header {
 	const char * content_length;
 	const char * accept_encoding;
 	const char * host;
+	const char * connection;
 	cookie * cookies;
 	int num_cookies;
 } req_header;
