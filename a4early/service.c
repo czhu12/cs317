@@ -62,18 +62,36 @@ void handle_client(int socket) {
 	initialize_routes();
 	req_header header;
 
-	while(1){
-	//do {
-	char buffer[5000];
-	int status = recv(socket, buffer, 4000, 0);
-	if(status == 0 || status == -1) break;
-	init_req_header(&header, buffer);
-	char * returnString = handle_request(&header);
-	send(socket, returnString, strlen(returnString), 0);
-	}
+	//while(1){
 
-	//}while(!strcmp(header.connection, "keep-alive"));
+	//char buffer[5000];
+	//int status = recv(socket, buffer, 4000, 0);
+	//if(status == 0 || status == -1) break;
+	//init_req_header(&header, buffer);
+	//char * returnString = handle_request(&header);
+	//send(socket, returnString, strlen(returnString), 0);
+	//}
+	
+	int recv_bytes;
+	do {
+		char buffer[5000];
+		int total_recv = 0;
+		recv_bytes = 0;
 
+		do {
+			recv_bytes = recv(socket, buffer + total_recv, 5000, 0);
+			if(recv_bytes == -1 || recv_bytes == 0) {
+				return;
+			}
+			total_recv += recv_bytes ;
+		}while(!http_header_complete(buffer, total_recv));
+
+		init_req_header(&header, buffer);
+		char * returnString = handle_request(&header);
+		send(socket, returnString, strlen(returnString), 0);
+		fflush(socket);
+	}while( recv_bytes != 0 && recv_bytes != -1);
+	
 	close(socket);
 
 	/* TODO Loop receiving requests and sending appropriate responses,
@@ -81,7 +99,6 @@ void handle_client(int socket) {
 	 *      met.
 	 */
 
-	return;
 }
 
 char * handle_request(req_header * header){
@@ -195,7 +212,9 @@ char * wrap_header(req_header * header, char * content ){
 	sprintf(content_length_str, "%d", content_length);
 
 	char * cookie_string = NULL;
-	cookie_string = build_cookie_string(header->cookies);
+	if(header->cookies){
+		cookie_string = build_cookie_string(header->cookies);
+	}
 
 	content = add_header("Content-Type: ","text/plain\r\n", content);
 
