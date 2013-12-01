@@ -28,19 +28,21 @@ typedef struct req_header {
 	const char * connection;
 	cookie * cookies;
 	int num_cookies;
+	const char * cache_control;
 } req_header;
 
 
-char * get_date();
-cookie * parse_cookies(char * header);
+char * get_date(int timeforward);
+cookie * parse_cookies(char * header, int * num_cookies);
 char * handle_route(req_header * header, int route_index);
-char * build_header(char * header_type, char * header_content);
+char * build_header(const char * header_type, const char * header_content);
 void init_req_header(req_header * req, char * header);
 char * handle_request(req_header * header);
 char * wrap_header(req_header * header, char * content);
 char * match_routes(req_header * header);
-char * add_header(char * header_type, char * header_content, char * content);
+char * add_header(const char * header_type, const char * header_content, char * content);
 void initialize_routes();
 void handle_client(int socket);
-char * extract_path(char * path);
+const char * extract_path(const char * path);
+int send_string(int socket, char * string, int size);
 #endif

@@ -21,8 +21,7 @@
 
 route routes[NUM_ROUTES];
 
-cookie * parse_cookies(char * header, int * num_cookies){
-	int cookie_counter = 0;
+cookie * parse_cookies(char * header){
 	cookie * cookie_walker;
 	cookie * cookie_list = malloc(10 * sizeof(cookie));
 	cookie_walker = cookie_list;
@@ -42,10 +41,8 @@ cookie * parse_cookies(char * header, int * num_cookies){
 				strcpy(cookie_walker->key, key);
 				strcpy(cookie_walker->value, value);
 				cookie_walker++;
-				cookie_counter++;
 			}
 		}
-	*num_cookies = cookie_counter;
 	}
 	return cookie_list;
 }
@@ -56,20 +53,18 @@ void init_req_header(req_header * req, char * header){
 	req->method = http_parse_method((char *) header);
 	req->uri = http_parse_uri(header);
 	req->path = http_parse_path(http_parse_uri(header));
-	cookie * cookies = parse_cookies(header, &(req->num_cookies));
+	cookie * cookies = parse_cookies(header);
 	req->cookies = cookies;
-	req->connection = http_parse_header_field( header, len, "Connection");
-	req->cache_control = http_parse_header_field(header, len, "Cache-Control");
+	req->connection = http_parse_header_field(header, len, "Connection");
 }
 
 void handle_client(int socket) {
 	initialize_routes();
 	req_header header;
-
+	
 	int recv_bytes;
 	int total_recv;
-
-	while(1){
+	do {
 		char buffer[5000] = {0};
  		recv_bytes = 0;
 		total_recv=0;
@@ -82,26 +77,26 @@ void handle_client(int socket) {
 		printf("%s", buffer);
 
 		init_req_header(&header, buffer);
+		printf("Connection : %s\n", header.connection);
 		char * returnString = handle_request(&header);
-		int status = send(socket, returnString, strlen(returnString), 0);
-		printf("%d\n", status);
-		//fflush(socket);
+		send_string(socket, returnString, strlen(returnString));	
+
 		if(!strncmp(header.connection, "close", 5)){
 			return;
 		}
-	}
-	//}while(!strcmp(header.connection, "keep-alive"));
 
-	//close(socket);
+		fflush(socket);
+
+
+	}while( recv_bytes != 0 && recv_bytes != -1);
+	
 
 	/* TODO Loop receiving requests and sending appropriate responses,
 	 *      until one of the conditions to close the connection is
 	 *      met.
 	 */
 
-	return;
 }
-
 int send_string(int socket, char * string, int size){
 	int bytes_remaining = size;
 	int bytes_sent = 0;
@@ -163,15 +158,13 @@ char * handle_route(req_header * header, int route_index){
 					}
 				}
 				char * content = malloc(strlen("Username: ") + strlen(username) + 10);
-				sprintf(content, "%s%s\n", "Username: ", username);
-				
+				sprintf(content, "%s%s", "Username: ", username);
+
 				cookie * cookie = malloc(sizeof(cookie));
 				cookie->action = 2;
 				strcpy(cookie->key, "username");
-				//printf("Username Found:: %s", username);
 				strcpy(cookie->value, username);
 				header->cookies = cookie;
-				header->num_cookies = 1;
 				return content;
 			}
 			break;
@@ -210,11 +203,9 @@ char * handle_route(req_header * header, int route_index){
 }
 
 char * build_cookie_string(cookie * cookies){
-	//printf(" HAAAAAAAAAAA%s\n", cookies->value);
-	//char * buffer = malloc(strlen(cookies->key) + strlen(cookies->value) + strlen("Exprires=") + strlen(get_date(24)) + 20);
-	char * buffer = malloc(1000);
+	char * buffer = malloc(strlen(cookies->key) + strlen(cookies->value) + 10);
 	if(cookies){
-		sprintf(buffer, "%s=%s;Expires=%s", cookies->key, cookies->value, get_date(24));
+		sprintf(buffer, "%s=%s", cookies->key, cookies->value);
 		//while(cookies){ 
 		//	strcat(buffer, cookies->key);
 		//	strcat(buffer, "=");
@@ -231,31 +222,33 @@ char * wrap_header(req_header * header, char * content ){
 	sprintf(content_length_str, "%d", content_length);
 
 	char * cookie_string = NULL;
-	cookie_string = build_cookie_string(header->cookies);
+	if(header->cookies){
+		cookie_string = build_cookie_string(header->cookies);
+	}
 
 	content = add_header("Content-Type: ","text/plain\r\n", content);
 
-	if(header->num_cookies > 0){
+	if(header->cookies){
 		content = add_header("Set-Cookie: ",cookie_string, content);
 	}
 	content = add_header("Content-Type: ","text/plain", content);
 	content = add_header("Content-Length: ", content_length_str, content);
-	content = add_header("Connection: ", header->connection, content);
-	//printf("Connection: %s, Cache-Control: %s \n", header->connection, header->cache_control);
-	content = add_header("Date: ", get_date(0), content);
+	content = add_header("Connection: ", "keep-alive", content);
+	content = add_header("Date: ",get_date(), content);
 	content = add_header("Cache-Control: ", "public", content);
 	content = add_header("HTTP/1.1 ", "200 OK", content);
 	return content;
 }
-char * add_header(const char * header_type, const char * header_content, char * content){
+char * add_header(char * header_type, char * header_content, char * content){
 	char * header = build_header(header_type, header_content);
-	char * new_str = (char * ) malloc((int)strlen(header) + (int)strlen(content) + 4);
+	char * new_str = (char * ) malloc((int)strlen(header) + (int)strlen(content) + 1);
 	sprintf(new_str, "%s%s", header, content);
+
 	free(header);
 	return new_str;
 }
 
-char * build_header(const char * header_type, const char * header_content){
+char * build_header(char * header_type, char * header_content){
 	//char * new_str;
 	char * endToken = "\r\n";
 
@@ -263,7 +256,7 @@ char * build_header(const char * header_type, const char * header_content){
 	sprintf(new_str, "%s%s%s", header_type, header_content, endToken);
 	return new_str;
 }
-const char * extract_path(const char * path){
+char * extract_path(char * path){
 	if(*path == '/' && (strlen(path) == 1)){
 		return path;
 	}
@@ -275,10 +268,9 @@ const char * extract_path(const char * path){
 	strcpy(new_path, split);
 	return new_path;
 }
-char * get_date(int timeforward){
+char * get_date(){
 	char buf[1000];
 	time_t now = time(0);
-	now = now + (60 * 60 * timeforward);
 	struct tm tm = *gmtime(&now);
 	strftime(buf, sizeof(buf), "%a, %d %b %Y %H:%M:%S %Z", &tm);
 	char * return_date = malloc(strlen(buf));
